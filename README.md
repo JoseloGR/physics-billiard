@@ -45,5 +45,3 @@ El usuario podrá visualizar las líneas de campo eléctrico de las cargas que e
 
 * **Kaleb** - *Initial work* - [kal3bo](https://github.com/kal3bo)
 * **Joselo** - *Initial work* - [JoseloGR](https://github.com/JoseloGR)
-
-
