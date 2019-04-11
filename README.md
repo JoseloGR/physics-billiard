@@ -1,1 +1,1 @@
-Josélo se la come :v
+# Proyecto Gráficas Computacionales
