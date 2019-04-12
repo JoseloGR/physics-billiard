@@ -5,7 +5,9 @@ sceneGroup = new THREE.Object3D,
 hemisphereLight = null;
 
 var staticBall = null,
-ball = null;
+ball = null,
+moundBase = null,
+moundBaseGreen = null;
 
 function animate(){
 
@@ -62,9 +64,24 @@ function createScene(canvas){
     var ambientLight = new THREE.AmbientLight(0xffcc00, 0.5);
     scene.add(ambientLight);
 
-    staticBall = createGolfBall('golf-ball.jpg', 20, 20, 20);
-    staticBall.position.set(0, 0, 0);
+    staticBall = createGolfBall('golf-ball.jpg', 0xffffff, 20, 20, 20);
+    staticBall.position.set(100, 0, 0);
     scene.add(staticBall);
+
+    staticBall = createGolfBall('golf-ball.jpg', 0xff0000, 20, 20, 20);
+    staticBall.position.set(350, 0, 0);
+    scene.add(staticBall);
+
+    moundBaseGreen = createMound(30, 20, 0x00ff00);
+    moundBaseGreen.position.set(-400, -30, 0);
+    moundBaseGreen.rotation.set(Math.PI, 0, 0);
+
+    moundBase = createMound(25, 80, 0x614126);
+    moundBase.position.set(-400, -60, 0);
+    moundBase.rotation.set(Math.PI, 0, 0);
+
+    scene.add(moundBase);
+    scene.add(moundBaseGreen);
 
     scene.add(sceneGroup);
 }
@@ -106,12 +123,23 @@ function createSkybox() {
 }
 
 // Create 3D Object with configuration of any sphere
-function createGolfBall(path, radius, width, height) {
-    var texture = new THREE.TextureLoader().load(`images/${path}`);
-    var material = new THREE.MeshPhongMaterial({ map: texture });
-    // Create the sphere geometry
-    var geometry = new THREE.SphereGeometry(radius, width, height);
-    // And put the geometry and material together into a mesh
-    var spherePlanet = new THREE.Mesh(geometry, material);
-    return spherePlanet;
+function createGolfBall(path, color, radius, width, height) {
+    // Put the geometry and material together into a mesh
+    var sphere = new THREE.Mesh(
+        new THREE.SphereGeometry(radius, width, height), 
+        new THREE.MeshPhongMaterial({ 
+            map: new THREE.TextureLoader().load(`images/${path}`), 
+            color: color 
+        })
+    );
+    return sphere;
+}
+
+// Create mound
+function createMound(radius, height, color) {
+    var mound = new THREE.Mesh(
+        new THREE.ConeGeometry(radius, height, 8),
+        new THREE.MeshLambertMaterial({color: color})
+    )
+    return mound;
 }
