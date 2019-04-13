@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# Proyecto Gráficas Computacionales
-=======
 # Golf eléctrico, después Billar
 
 Proyecto Final de Gráficas Computacionales en el cual se desarrollará una simulación de fuerzas eléctricas debido a varias cargas, se utilizará la librería Three JS para desarrollar el ambiente virtual.
