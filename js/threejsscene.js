@@ -82,7 +82,6 @@ function createScene(canvas){
 
     scene.add(moundBase);
     scene.add(moundBaseGreen);
-
     scene.add(sceneGroup);
 }
 
