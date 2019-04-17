@@ -45,6 +45,7 @@ function createScene(canvas){
 
     // Adding Skybox:
     createSkybox();
+    createLines();
 
      // Light
     hemisphereLight = new THREE.HemisphereLight(0xffffff, 0x999999, 1);
@@ -67,10 +68,12 @@ function createScene(canvas){
     staticBall = createGolfBall('golf-ball.jpg', 0xffffff, 20, 20, 20);
     staticBall.position.set(100, 0, 0);
     scene.add(staticBall);
+    sceneGroup.add(staticBall);
 
     staticBall = createGolfBall('golf-ball.jpg', 0xff0000, 20, 20, 20);
     staticBall.position.set(350, 0, 0);
     scene.add(staticBall);
+    sceneGroup.add(staticBall);
 
     moundBaseGreen = createMound(30, 20, 0x00ff00);
     moundBaseGreen.position.set(-400, -30, 0);
@@ -82,6 +85,9 @@ function createScene(canvas){
 
     scene.add(moundBase);
     scene.add(moundBaseGreen);
+
+    sceneGroup.add(moundBase);
+    sceneGroup.add(moundBaseGreen);
     scene.add(sceneGroup);
 }
 
@@ -141,4 +147,24 @@ function createMound(radius, height, color) {
         new THREE.MeshLambertMaterial({color: color})
     )
     return mound;
+}
+
+// Create lines:
+function createLines(){
+    addLine(0, 0, 0, 1000, 0, 0, 0x000fff);
+    addLine(0, 0, 0, 0, 1000, 0, 0xff0000 );
+    addLine(0, 0, 0, 0, 0, -1000, 0xffff33);
+}
+
+function addLine(posXi, posYi, posZi, posXf, posYf, posZf, colorHex){
+    var geometry = new THREE.Geometry();
+    geometry.vertices.push(
+        new THREE.Vector3(posXi, posYi, posZi),
+        new THREE.Vector3(posXf, posYf, posZf));
+    // The Line
+    var line = new THREE.Line(geometry, new THREE.LineBasicMaterial({
+                color: colorHex
+            }));
+    scene.add(line);
+    sceneGroup.add(line);
 }
