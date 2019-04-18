@@ -9,8 +9,13 @@ ball = null,
 moundBase = null,
 moundBaseGreen = null;
 
-function animate(){
+// Electric charge of the balls where 1 means negative (-) and 2 means positive (+)
+staticBallCharge = 2;
+ballCharge = 1;
 
+function animate(){
+    addArrow(staticBall.position.x, staticBall.position.y, staticBall.position.z, ball.position.x, ball.position.y, ball.position.z, 0xffff00, (ballCharge - staticBallCharge == 0)? 1 : -1)
+    addArrow(ball.position.x, ball.position.y, ball.position.z, staticBall.position.x, staticBall.position.y, staticBall.position.z, 0xffff00, (ballCharge - staticBallCharge == 0)? -1 : 1)
 }
 
 function run(){
@@ -19,7 +24,6 @@ function run(){
     // Render the scene
     renderer.render( scene, camera );
 
-    // Spin the cube for next frame
     animate();
 }
 
@@ -70,10 +74,10 @@ function createScene(canvas){
     scene.add(staticBall);
     sceneGroup.add(staticBall);
 
-    staticBall = createGolfBall('golf-ball.jpg', 0xff0000, 20, 20, 20);
-    staticBall.position.set(350, 0, 0);
-    scene.add(staticBall);
-    sceneGroup.add(staticBall);
+    ball = createGolfBall('golf-ball.jpg', 0xff0000, 20, 20, 20);
+    ball.position.set(350, 0, 0);
+    scene.add(ball);
+    sceneGroup.add(ball);
 
     moundBaseGreen = createMound(30, 20, 0x00ff00);
     moundBaseGreen.position.set(-400, -30, 0);
@@ -167,4 +171,19 @@ function addLine(posXi, posYi, posZi, posXf, posYf, posZf, colorHex){
             }));
     scene.add(line);
     sceneGroup.add(line);
+}
+
+function addArrow(posXi, posYi, posZi, posXf, posYf, posZf, colorHex, charge){
+    var dir = new THREE.Vector3(posXf, posYf, posZf);
+
+    // Normalize the direction vector (convert to vector of length 1)
+    dir.normalize();
+    
+    var origin = new THREE.Vector3(posXi, posYi, posZi);
+    var length = 70 * charge;
+    var hex = colorHex;
+    
+    var arrowHelper = new THREE.ArrowHelper(dir, origin, length, hex);
+    scene.add(arrowHelper);
+    sceneGroup.add(arrowHelper);
 }
