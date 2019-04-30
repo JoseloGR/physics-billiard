@@ -13,6 +13,8 @@ moundBaseGreen = null;
 staticBallCharge = 2;
 ballCharge = 1;
 
+var controls = null;
+
 function animate(){
     addArrow(staticBall.position.x, staticBall.position.y, staticBall.position.z, ball.position.x, ball.position.y, ball.position.z, 0xffff00, (ballCharge - staticBallCharge == 0)? 1 : -1)
     addArrow(ball.position.x, ball.position.y, ball.position.z, staticBall.position.x, staticBall.position.y, staticBall.position.z, 0xffff00, (ballCharge - staticBallCharge == 0)? -1 : 1)
@@ -93,6 +95,28 @@ function createScene(canvas){
     sceneGroup.add(moundBase);
     sceneGroup.add(moundBaseGreen);
     scene.add(sceneGroup);
+
+    controls = new THREE.TrackballControls( camera, renderer.domElement );
+    controls.rotateSpeed = 1.0;
+    controls.zoomSpeed = 1.2;
+    controls.panSpeed = 0.8;
+    controls.noZoom = false;
+    controls.noPan = false;
+    controls.staticMoving = true;
+    controls.dynamicDampingFactor = 0.3;
+    
+
+    var dragControls = new THREE.DragControls( [ball], camera, renderer.domElement );
+    dragControls.addEventListener( 'dragstart', function () {
+
+        controls.enabled = false;
+
+    } );
+    dragControls.addEventListener( 'dragend', function () {
+
+        controls.enabled = true;
+
+    } );
 }
 
 function createSkybox() {
