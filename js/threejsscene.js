@@ -9,15 +9,25 @@ ball = null,
 moundBase = null,
 moundBaseGreen = null;
 
+// Arrows:
+var 
+a1 = null,
+a2 = null;
+
 // Electric charge of the balls where 1 means negative (-) and 2 means positive (+)
-staticBallCharge = 2;
+staticBallCharge = 1;
 ballCharge = 1;
+
+//Arrows:
+var a1 = null,
+a2 = null;
 
 var controls = null;
 
 function animate(){
-    addArrow(staticBall.position.x, staticBall.position.y, staticBall.position.z, ball.position.x, ball.position.y, ball.position.z, 0xffff00, (ballCharge - staticBallCharge == 0)? 1 : -1)
-    addArrow(ball.position.x, ball.position.y, ball.position.z, staticBall.position.x, staticBall.position.y, staticBall.position.z, 0xffff00, (ballCharge - staticBallCharge == 0)? -1 : 1)
+    //Update arrow position:
+    updateArrowPosition(a1, staticBall.position, ball.position)
+    updateArrowPosition(a2, ball.position, staticBall.position)
 }
 
 function run(){
@@ -25,7 +35,6 @@ function run(){
 
     // Render the scene
     renderer.render( scene, camera );
-
     animate();
 }
 
@@ -81,6 +90,16 @@ function createScene(canvas){
     scene.add(ball);
     sceneGroup.add(ball);
 
+    //a1 = addArrow(staticBall.position.x, staticBall.position.y, staticBall.position.z, ball.position.x, ball.position.y, ball.position.z, 0xffff00, (ballCharge - staticBallCharge == 0)? 1 : -1)
+    a1 = addArrow(staticBall.position, ball.position, 0xffff00, (ballCharge - staticBallCharge == 0)? -1 : 1)
+    a2 = addArrow(ball.position, staticBall.position, 0xffff00, (ballCharge - staticBallCharge == 0)? -1 : 1)
+    
+    scene.add(a1);
+    sceneGroup.add(a1);
+    
+    scene.add(a2);
+    sceneGroup.add(a2);
+
     moundBaseGreen = createMound(30, 20, 0x00ff00);
     moundBaseGreen.position.set(-400, -30, 0);
     moundBaseGreen.rotation.set(Math.PI, 0, 0);
@@ -106,7 +125,7 @@ function createScene(canvas){
     controls.dynamicDampingFactor = 0.3;
     
 
-    var dragControls = new THREE.DragControls( [ball], camera, renderer.domElement );
+    var dragControls = new THREE.DragControls( [staticBall, ball], camera, renderer.domElement );
     dragControls.addEventListener( 'dragstart', function () {
 
         controls.enabled = false;
@@ -197,17 +216,24 @@ function addLine(posXi, posYi, posZi, posXf, posYf, posZf, colorHex){
     sceneGroup.add(line);
 }
 
-function addArrow(posXi, posYi, posZi, posXf, posYf, posZf, colorHex, charge){
-    var dir = new THREE.Vector3(posXf, posYf, posZf);
+function addArrow(origin, target, colorHex, charge){
+    var dir = new THREE.Vector3().sub(target, origin);
 
     // Normalize the direction vector (convert to vector of length 1)
     dir.normalize();
     
-    var origin = new THREE.Vector3(posXi, posYi, posZi);
     var length = 70 * charge;
     var hex = colorHex;
     
     var arrowHelper = new THREE.ArrowHelper(dir, origin, length, hex);
-    scene.add(arrowHelper);
-    sceneGroup.add(arrowHelper);
+    return arrowHelper;
+}
+
+function updateArrowPosition(arrow, origin, target){
+    arrow.position.x = origin.x;
+    arrow.position.y = origin.y;
+    arrow.position.z = origin.z;
+    var dir = new THREE.Vector3().sub(target, origin);
+    dir.normalize();
+    arrow.setDirection(dir);
 }
