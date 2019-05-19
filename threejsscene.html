@@ -15,6 +15,8 @@
 <!--script src="js/sceneHandlers.js"></script-->
 <script src="js/DragControls.js"></script>
 <script src="js/TrackballControls.js"></script>
+<!-- <script src="js/physics.js"></script> -->
+
 
 <script type="text/javascript">
        
@@ -44,11 +46,43 @@
 <body>
 
 	<div id="container">
-		<div id="slider"></div>
-	    <canvas id="webglcanvas"></canvas>
-		<div id="title">
-			Physics Billiard
+		<div id="slider">
+			
 		</div>
+	    <canvas id="webglcanvas"></canvas>
+		<div id="title"> Physics Billiard
+				<div id="mybutton" style="position: fixed; 	bottom: 1650px; right: 100px;">
+						<input type="button" id="bntClick" value="Ayuda" onclick="pruebaBoton();"/>
+					</div>
+				<div class="row">
+						<div class="column">
+								<tr><th>X:<input style="background-color: transparent; color:#bbb;" ></input></th>
+										<th>Y:<input style="background-color: transparent; color:#bbb;"></input></th>
+										<th>Z:<input style="background-color: transparent; color:#bbb;"></input></th>
+
+									</tr>
+										</div>
+						<div class="column">
+								<tr><th>X:<input style="background-color: transparent; color:#bbb;" disabled></input></th>
+									<th>Y:<input style="background-color: transparent; color:#bbb;" disabled></input></th>
+									<th>Z:<input style="background-color: transparent; color:#bbb;" disabled></input></th>
+								</tr>
+						</div>
+						<div class="column">
+								<tr><th>X:<input style="background-color: transparent; color:#bbb;"  disabled></input></th>
+									<th>Y:<input style="background-color: transparent; color:#bbb;"  disabled></input></th>
+									<th>Z:<input style="background-color: transparent; color:#bbb;"  disabled></input></th>
+								</tr>
+						</div>
+				</div>
+				
+		</div>
+		<div style="position: absolute;
+	bottom:100px;
+	right:100px; 
+	margin-left:10px;">
+				<input type="button" id="bntClick" value="Comenzar" onclick="startInteraction();"/>
+			</div>
 		<div id="prompt">
 			Drag the mouse to rotate the scene<br>Drag the slider to scale.
 		</div>

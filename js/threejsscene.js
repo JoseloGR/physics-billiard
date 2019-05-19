@@ -5,6 +5,7 @@ sceneGroup = new THREE.Object3D,
 hemisphereLight = null;
 
 var staticBall = null,
+staticBall2 = null,
 ball = null,
 moundBase = null,
 moundBaseGreen = null;
@@ -13,10 +14,18 @@ moundBaseGreen = null;
 var 
 a1 = null,
 a2 = null;
+a3 = null;
 
 // Electric charge of the balls where 1 means negative (-) and 2 means positive (+)
 staticBallCharge = 1;
+staticBall2Charge = 1;
 ballCharge = 1;
+
+
+// Q:                   **********
+staticBallQ = .01;
+staticBall2Q = .53;
+ballQ = .05;
 
 //Arrows:
 var a1 = null,
@@ -28,6 +37,7 @@ function animate(){
     //Update arrow position:
     updateArrowPosition(a1, staticBall.position, ball.position)
     updateArrowPosition(a2, ball.position, staticBall.position)
+    
 }
 
 function run(){
@@ -81,14 +91,19 @@ function createScene(canvas){
     scene.add(ambientLight);
 
     staticBall = createGolfBall('golf-ball.jpg', 0xffffff, 20, 20, 20);
-    staticBall.position.set(100, 0, 0);
+    staticBall.position.set(-500, 0, 0);
     scene.add(staticBall);
     sceneGroup.add(staticBall);
 
     ball = createGolfBall('golf-ball.jpg', 0xff0000, 20, 20, 20);
-    ball.position.set(350, 0, 0);
+    ball.position.set(10, 0, 0);
     scene.add(ball);
     sceneGroup.add(ball);
+
+    staticBall2 = createGolfBall('golf-ball.jpg', 0xff00ff, 20, 20, 20);
+    staticBall2.position.set(350, 0, 0);
+    scene.add(staticBall2);
+    sceneGroup.add(staticBall2);
 
     //a1 = addArrow(staticBall.position.x, staticBall.position.y, staticBall.position.z, ball.position.x, ball.position.y, ball.position.z, 0xffff00, (ballCharge - staticBallCharge == 0)? 1 : -1)
     a1 = addArrow(staticBall.position, ball.position, 0xffff00, (ballCharge - staticBallCharge == 0)? -1 : 1)
@@ -236,4 +251,111 @@ function updateArrowPosition(arrow, origin, target){
     var dir = new THREE.Vector3().sub(target, origin);
     dir.normalize();
     arrow.setDirection(dir);
+}
+
+function playAnimation(){
+
+}
+
+function pruebaBoton(){
+    console.log("Éxito");
+}
+
+function updatePosition(i, j, k){
+    ball.position.x += i;
+    ball.position.y += j;
+    ball.position.z += k;
+    setTimeout(function() {
+        startInteraction();
+    }, 15);
+}
+var cont = 1;
+function startInteraction(){
+    if (cont < 10000){
+        // Distances: (for example, distance between principal ball -1- and static ball -2- would be d12)
+        var d12 = calculateDistanceBetweenTwoPoints(ball.position, staticBall.position);
+        var d13 = calculateDistanceBetweenTwoPoints(ball.position, staticBall2.position);
+        // Forces within axis:
+        var f12 = calculateForceWithinAnAxis(ballQ, staticBallQ, d12);
+        var f13 = calculateForceWithinAnAxis(ballQ, staticBall2Q, d13);
+        // r:
+        var i12 = (ball.position.x - staticBall.position.x) / d12;
+        var i13 = (ball.position.x - staticBall2.position.x) / d13;
+        var j12 = (ball.position.y - staticBall.position.y) / d12;
+        var j13 = (ball.position.y - staticBall2.position.y) / d13;
+        var k12 = (ball.position.z - staticBall.position.z) / d12;
+        var k13 = (ball.position.z - staticBall2.position.z) / d13;  
+        // Forces with axis:
+        f12i = Math.abs(f12 * i12);
+        f13i = Math.abs(f13 * i13);
+        f12j = Math.abs(f12 * j12);
+        f13j = Math.abs(f13 * j13);
+        f12k = Math.abs(f12 * k12);
+        f13k = Math.abs(f13 * k13);
+        // Is the summation of forces equivalent to cero?
+        if ((f12i - f13i) >= -5 && (f12i - f13i) <= 5){
+            console.log("Ei = 0");
+            if ((f12j - f13j) >= -5 && (f12j - f13j) <= 5)
+                console.log("Ej = 0");
+                if ((f12k - f13k) >= -5 && (f12k - f13k) <= 5)
+                    console.log("Ef = 0");
+                    alert("Total force equals cero")
+        }
+        else{
+            // Calculate final direction:
+            if ((f12i - f13i) == 0)
+                var i = 0;
+            else
+                var i = ((f12i - f13i) > 0 )? 1:-1;
+            if ((f12j - f13j) == 0)
+                var j = 0;
+            else
+                var j = ((f12j - f13j) > 0)? 1:-1;
+            if ((f12k - f13k) == 0)
+                var k = 0;
+            else
+                var k = ((f12k - f13k) > 0)? 1:-1;
+            
+            cont += 1;
+            updatePosition(i, j, k);
+        }
+        
+    }
+}
+
+// Physics file: 
+// Global variables:
+var k = 9 * (powerOf(10, 9));
+
+function calculateDistanceBetweenTwoPoints(pos1, pos2){
+    x1 = pos1.x;
+    x2 = pos2.x;
+    y1 = pos1.y;
+    y2 = pos2.y;
+    z1 = pos1.z;
+    z2 = pos2.z;
+    return (Math.sqrt(((x2 - x1) * (x2 - x1)) + ((y2 - y1) * (y2 - y1)) + ((z2 - z1) * (z2 - z1))));
+}
+
+function powerOf(n, x){
+    if (x == 0)
+        return 1;
+    else if (x == 1)
+        return n;
+    else if (n == 0)
+        return 0;
+    else {
+        var res = n;
+        for (var i = 1; i < x; i++)
+            res *= n;
+        return res;
+    }
+}
+
+function calculateR(p1, p2, d12){
+    return ((p1 - p2) / d12);
+}
+
+function calculateForceWithinAnAxis(q1, q2, d){
+    return ((k * Math.abs(q1) * Math.abs(q2)) / powerOf(d, 2));
 }
