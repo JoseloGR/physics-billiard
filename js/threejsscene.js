@@ -27,9 +27,9 @@ staticBallQ = .01;
 staticBall2Q = .53;
 ballQ = .05;
 
-CONST_STATICBALLQ = .01;
-CONST_STATICBALL2Q = .53;
-CONST_BALLQ = .05;
+CONST_STATICBALLQ = 0.000001;
+CONST_STATICBALL2Q = 0.000001;
+CONST_BALLQ = 0.000001;
 
 //Arrows:
 var a1 = null,
@@ -103,7 +103,7 @@ function createScene(canvas){
     var ambientLight = new THREE.AmbientLight(0xffcc00, 0.5);
     scene.add(ambientLight);
 
-    staticBall = createGolfBall('golf-ball.jpg', 0xffffff, 20, 20, 20);
+    staticBall = createGolfBall('golf-ball-texture.jpg', 0xffffff, 20, 20, 20);
     staticBall.position.set(-500, 0, 0);
     scene.add(staticBall);
     sceneGroup.add(staticBall);
@@ -189,6 +189,7 @@ function createScene(canvas){
     charge3['z'] = new ChargePosition(document.getElementById("charge3_z"), staticBall2.position.z);
 }
 
+// Create skybox
 function createSkybox() {
     var skyboxGeometry = new THREE.CubeGeometry(10000, 10000, 10000);
     var skyboxMaterials = [
@@ -254,6 +255,7 @@ function createLines(){
     addLine(0, 0, 0, 0, 0, -1000, 0xffff33);
 }
 
+// Function to create basic line
 function addLine(posXi, posYi, posZi, posXf, posYf, posZf, colorHex){
     var geometry = new THREE.Geometry();
     geometry.vertices.push(
@@ -267,6 +269,7 @@ function addLine(posXi, posYi, posZi, posXf, posYf, posZf, colorHex){
     sceneGroup.add(line);
 }
 
+// Function to create basic arrow helper
 function addArrow(origin, target, colorHex, charge){
     var dir = new THREE.Vector3().subVectors(target, origin);
 
@@ -280,6 +283,7 @@ function addArrow(origin, target, colorHex, charge){
     return arrowHelper;
 }
 
+// Function to compute vector direction
 function updateArrowPosition(arrow, origin, target){
     arrow.position.x = origin.x;
     arrow.position.y = origin.y;
@@ -289,10 +293,7 @@ function updateArrowPosition(arrow, origin, target){
     arrow.setDirection(dir);
 }
 
-function pruebaBoton(){
-    console.log("Éxito");
-}
-
+// Update position static charge
 function updatePosition(i, j, k){
     ball.position.x += i;
     ball.position.y += j;
@@ -302,7 +303,11 @@ function updatePosition(i, j, k){
     }, 15);
 }
 var cont = 1;
+// Compute the force
 function startInteraction(){
+    setTimeout(() => {
+        $("#bntReload").removeClass("d-none");
+    }, 2000);
     if (cont < 10000){
         // Distances: (for example, distance between principal ball -1- and static ball -2- would be d12)
         var d12 = calculateDistanceBetweenTwoPoints(ball.position, staticBall.position);
@@ -355,6 +360,12 @@ function startInteraction(){
     }
 }
 
+// Reload the page
+function reload() {
+    location.reload();
+}
+
+// Event listeners for when movement keys are pressed and released
 function listenForKeyboard() {
     // A key has been pressed
     var onKeyDown = function(event) {
@@ -371,10 +382,10 @@ function listenForKeyboard() {
                 break;
       }
     };
-    // Add event listeners for when movement keys are pressed and released
     document.addEventListener('keydown', onKeyDown, false);
 }
 
+// function to check any changes for charges positions
 function checkChanges() {
     charge1['x'].change(parseInt(staticBall.position.x));
     charge1['y'].change(parseInt(staticBall.position.y));
@@ -389,6 +400,7 @@ function checkChanges() {
     charge3['z'].change(parseInt(staticBall2.position.z));
 }
 
+// function to change value charge 1
 function scaleCharge1(value) {
     var _value = parseInt(value);
     if (_value !== 0) {
@@ -398,6 +410,7 @@ function scaleCharge1(value) {
     staticBallCharge = _value < 0 ? 1 : 2;
 }
 
+// function to change value charge 2
 function scaleCharge2(value) {
     var _value = parseInt(value);
     if (_value !== 0) {
@@ -407,6 +420,7 @@ function scaleCharge2(value) {
     staticBall2Charge = _value < 0 ? 1 : 2;
 }
 
+// Binding input text with charges position
 function ChargePosition(element, data) {
     this.data = data;
     this.element = element;
@@ -414,12 +428,14 @@ function ChargePosition(element, data) {
     element.addEventListener("change", this, false);
 }
 
+// Event handler for input text
 ChargePosition.prototype.handleEvent = function(event) {
     switch (event.type) {
         case "change": this.change(this.element.value);
     }
 };
 
+// Change event for input text
 ChargePosition.prototype.change = function(value) {
     this.data = value;
     this.element.value = value;

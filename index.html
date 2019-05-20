@@ -2,7 +2,8 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<title>Final Project</title>
-
+		
+		<link rel="shortcut icon" href="images/favicon.ico" />
 		<link rel="stylesheet" href="libs/jquery-ui/jquery-ui.css" />
 		<link href="https://fonts.googleapis.com/css?family=Arimo&display=swap" rel="stylesheet">
 		<link rel="stylesheet" href="css/main.css" />
@@ -95,8 +96,11 @@
 					<div class="m-5">Y: <input class="input-coord" id="charge3_y" disabled></input></div>
 					<div class="m-5">Z: <input class="input-coord" id="charge3_z" disabled></input></div>
 				</div>
-				<div class="column">
+				<div class="column mb-10">
 					<input class="btn" type="button" id="bntClick" value="Comenzar" onclick="startInteraction();"/>
+				</div>
+				<div class="column">
+					<input class="btn btn-reload d-none" type="button" id="bntReload" value="Reiniciar" onclick="reload();"/>
 				</div>
 			</div>
 				

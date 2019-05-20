@@ -265,3 +265,29 @@ body {
 	z-index: -1;
 	transition: width 150ms ease-in-out;
 }
+
+.btn-reload {
+	border: 2px solid #007bff;
+	color: #007bff;
+}
+
+.btn-reload:hover, .btn-reload:focus {
+	color: #fff;
+	outline: 0;
+	background: #007bff;
+}
+
+.btn-reload:after {
+	background: #007bff;
+}
+
+#prompt {
+	position:absolute;
+	bottom:20px;
+	left:20px;
+	color:#b8c3f5;
+}
+
+.d-none {
+	display: none;
+}
