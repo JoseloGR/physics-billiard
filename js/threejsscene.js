@@ -35,13 +35,17 @@ var controls = null;
 var controlBall1 = null,
 controlBall2 = null;
 
+var charge1 = {'x': 0, 'y': 0, 'z':0};
+var charge2 = {'x': 0, 'y': 0, 'z':0};
+var charge3 = {'x': 0, 'y': 0, 'z':0};
 console.warn = function(){}; // now warnings do nothing
 
 function animate(){
     //Update arrow position:
     updateArrowPosition(a1, staticBall.position, ball.position)
     updateArrowPosition(a2, ball.position, staticBall.position)
-    
+
+    checkChanges();
 }
 
 function run(){
@@ -167,6 +171,18 @@ function createScene(canvas){
     controlBall2.attach(ball);
     scene.add(controlBall2);
     listenForKeyboard();
+
+    charge1['x'] = new ChargePosition(document.getElementById("charge1_x"), staticBall.position.x);
+    charge1['y'] = new ChargePosition(document.getElementById("charge1_y"), staticBall.position.y);
+    charge1['z'] = new ChargePosition(document.getElementById("charge1_z"), staticBall.position.z);
+
+    charge2['x'] = new ChargePosition(document.getElementById("charge2_x"), ball.position.x);
+    charge2['y'] = new ChargePosition(document.getElementById("charge2_y"), ball.position.y);
+    charge2['z'] = new ChargePosition(document.getElementById("charge2_z"), ball.position.z);
+
+    charge3['x'] = new ChargePosition(document.getElementById("charge3_x"), staticBall2.position.x);
+    charge3['y'] = new ChargePosition(document.getElementById("charge3_y"), staticBall2.position.y);
+    charge3['z'] = new ChargePosition(document.getElementById("charge3_z"), staticBall2.position.z);
 }
 
 function createSkybox() {
@@ -269,10 +285,6 @@ function updateArrowPosition(arrow, origin, target){
     arrow.setDirection(dir);
 }
 
-function playAnimation(){
-
-}
-
 function pruebaBoton(){
     console.log("Éxito");
 }
@@ -358,3 +370,35 @@ function listenForKeyboard() {
     // Add event listeners for when movement keys are pressed and released
     document.addEventListener('keydown', onKeyDown, false);
 }
+
+function checkChanges() {
+    charge1['x'].change(parseInt(staticBall.position.x));
+    charge1['y'].change(parseInt(staticBall.position.y));
+    charge1['z'].change(parseInt(staticBall.position.z));
+
+    charge2['x'].change(parseInt(ball.position.x));
+    charge2['y'].change(parseInt(ball.position.y));
+    charge2['z'].change(parseInt(ball.position.z));
+
+    charge3['x'].change(parseInt(staticBall2.position.x));
+    charge3['y'].change(parseInt(staticBall2.position.y));
+    charge3['z'].change(parseInt(staticBall2.position.z));
+}
+
+function ChargePosition(element, data) {
+    this.data = data;
+    this.element = element;
+    element.value = data;
+    element.addEventListener("change", this, false);
+}
+
+ChargePosition.prototype.handleEvent = function(event) {
+    switch (event.type) {
+        case "change": this.change(this.element.value);
+    }
+};
+
+ChargePosition.prototype.change = function(value) {
+    this.data = value;
+    this.element.value = value;
+};

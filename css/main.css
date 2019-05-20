@@ -20,18 +20,48 @@ body {
 	background-color:#ffffff;
 }
 
-.column {
-	float: left;
-	width: 33.33%;
+.side-panel {
+	width: 15%;
+	position: absolute;
+	right: 0px;
+	top: 20px;
+	color: #e28383;
+	display: flex;
+	flex-direction: column;
 }
   
-  /* Clear floats after the columns */
-.row:after {
-	content: "";
+/* Clear floats after the columns */
+.row {
 	display: flex;
+	flex-direction: column;
 	clear: both;
 }
 
+.column {
+	float: left;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-start;
+}
+
 .input-coord {
+	width: 150px;
+	background-color: transparent; 
+	color:#bbb;
+	border: none;
+	border-bottom: 1px solid #ddd;
+}
+
+.mb-20 {
+	margin-bottom: 20px;
+}
+
+.m-10 {
+	margin: 10px;
+}
+
+.m-5 {
 	margin: 5px;
 }
