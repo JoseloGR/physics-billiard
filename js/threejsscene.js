@@ -32,6 +32,9 @@ var a1 = null,
 a2 = null;
 
 var controls = null;
+var controlBall1 = null,
+controlBall2 = null;
+
 console.warn = function(){}; // now warnings do nothing
 
 function animate(){
@@ -118,7 +121,7 @@ function createScene(canvas){
     sceneGroup.add(a2);
 
     moundBaseGreen = createMound(30, 20, 0x00ff00);
-    moundBaseGreen.position.set(-400, -30, 0);
+    moundBaseGreen.position.set(-400, -25, 0);
     moundBaseGreen.rotation.set(Math.PI, 0, 0);
 
     moundBase = createMound(25, 80, 0x614126);
@@ -133,9 +136,9 @@ function createScene(canvas){
     scene.add(sceneGroup);
 
     controls = new THREE.TrackballControls( camera, renderer.domElement );
-    controls.rotateSpeed = 1.0;
-    controls.zoomSpeed = 1.2;
-    controls.panSpeed = 0.8;
+    controls.rotateSpeed = 2.0;
+    controls.zoomSpeed = 1.5;
+    controls.panSpeed = 1.8;
     controls.noZoom = false;
     controls.noPan = false;
     controls.staticMoving = true;
@@ -144,15 +147,26 @@ function createScene(canvas){
 
     var dragControls = new THREE.DragControls( [staticBall, ball], camera, renderer.domElement );
     dragControls.addEventListener( 'dragstart', function () {
-
         controls.enabled = false;
-
     } );
     dragControls.addEventListener( 'dragend', function () {
-
         controls.enabled = true;
-
     } );
+
+    controlBall1 = new THREE.TransformControls(camera, renderer.domElement);
+    controlBall1.addEventListener( 'dragging-changed', function(event) {
+        controls.enabled = !event.value;
+    });
+    controlBall1.attach(staticBall);
+    scene.add(controlBall1);
+
+    controlBall2 = new THREE.TransformControls(camera, renderer.domElement);
+    controlBall2.addEventListener( 'dragging-changed', function(event) {
+        controls.enabled = !event.value;
+    });
+    controlBall2.attach(ball);
+    scene.add(controlBall2);
+    listenForKeyboard();
 }
 
 function createSkybox() {
@@ -323,6 +337,26 @@ function startInteraction(){
         }
         
     }
+}
+
+function listenForKeyboard() {
+    // A key has been pressed
+    var onKeyDown = function(event) {
+        switch (event.keyCode) {
+            case 49: // 1
+                controlBall1.showX = !controlBall1.showX;
+                controlBall1.showY = !controlBall1.showY;
+                controlBall1.showZ = !controlBall1.showZ;
+                break;
+            case 50: // 2
+                controlBall2.showX = !controlBall2.showX;
+                controlBall2.showY = !controlBall2.showY;
+                controlBall2.showZ = !controlBall2.showZ;
+                break;
+      }
+    };
+    // Add event listeners for when movement keys are pressed and released
+    document.addEventListener('keydown', onKeyDown, false);
 }
 
 // Physics file: 

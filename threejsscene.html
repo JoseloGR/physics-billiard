@@ -14,6 +14,7 @@
 <script src="js/threejsscene.js"></script>
 <script src="js/DragControls.js"></script>
 <script src="js/TrackballControls.js"></script>
+<script src="js/TransformControls.js"></script>
 <!-- <script src="js/physics.js"></script> -->
 
 
@@ -38,9 +39,6 @@
 <body>
 
 	<div id="container">
-		<div id="slider">
-			
-		</div>
 	    <canvas id="webglcanvas"></canvas>
 		<div id="title"> Physics Billiard
 				<div id="mybutton" style="position: fixed; 	bottom: 1650px; right: 100px;">
@@ -79,8 +77,8 @@
 			Drag the mouse to rotate the scene<br>Zoom to scale.
 		</div>
 	    <div id="status">
-		    <div id="rotation">rotation: 0,0,0</div>
-		    <div id="scale">scale: 1</div>
+		    <div id="rotation" style="display: none;">rotation: 0,0,0</div>
+		    <div id="scale" style="display: none;">scale: 1</div>
 	    </div>
 	</div>
 	
