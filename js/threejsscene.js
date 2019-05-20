@@ -27,6 +27,10 @@ staticBallQ = .01;
 staticBall2Q = .53;
 ballQ = .05;
 
+CONST_STATICBALLQ = .01;
+CONST_STATICBALL2Q = .53;
+CONST_BALLQ = .05;
+
 //Arrows:
 var a1 = null,
 a2 = null;
@@ -383,6 +387,24 @@ function checkChanges() {
     charge3['x'].change(parseInt(staticBall2.position.x));
     charge3['y'].change(parseInt(staticBall2.position.y));
     charge3['z'].change(parseInt(staticBall2.position.z));
+}
+
+function scaleCharge1(value) {
+    var _value = parseInt(value);
+    if (_value !== 0) {
+        staticBall.scale.set(value, value, value);
+        staticBallQ = CONST_STATICBALLQ * Math.abs(_value);
+    }
+    staticBallCharge = _value < 0 ? 1 : 2;
+}
+
+function scaleCharge2(value) {
+    var _value = parseInt(value);
+    if (_value !== 0) {
+        ball.scale.set(value, value, value);
+        staticBall2Q = CONST_STATICBALL2Q * Math.abs(_value);
+    }
+    staticBall2Charge = _value < 0 ? 1 : 2;
 }
 
 function ChargePosition(element, data) {

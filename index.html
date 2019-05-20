@@ -5,7 +5,6 @@
 
 		<link rel="stylesheet" href="libs/jquery-ui/jquery-ui.css" />
 		<link rel="stylesheet" href="css/main.css" />
-		<link rel="stylesheet" href="css/threejsscene.css" />
 
 		<script src="libs/jquery-3.3.1/jquery-3.3.1.js"></script>
 		<script src="libs/jquery-ui/jquery-ui.js"></script>
@@ -21,7 +20,20 @@
 			
 			$(document).ready(
 					function() {
-			
+
+						var rangeSlider = document.getElementById("rs-range-line");
+						var rangeBullet = document.getElementById("rs-bullet");
+						rangeSlider.addEventListener("input", function() {
+							rangeBullet.innerHTML = rangeSlider.value;
+							scaleCharge1(rangeSlider.value);
+						});
+						var rangeSlider2 = document.getElementById("rs-range-line2");
+						var rangeBullet2 = document.getElementById("rs-bullet2");
+						rangeSlider2.addEventListener("input", function() {
+							rangeBullet2.innerHTML = rangeSlider2.value;
+							scaleCharge2(rangeSlider2.value);
+						});
+
 						var canvas = document.getElementById("webglcanvas");
 
 						// create the scene
@@ -44,29 +56,50 @@
 				Golfito Eléctrico
 			</div>
 			<div class="row">
-				<div class="column">
+				<div class="column mb-10">
 					<div class="m-10">Carga 1</div>
+					<div class="content-range">
+						<span id="rs-bullet" class="rs-label">-1</span>
+						<div class="range-slider">
+							<input id="rs-range-line" class="rs-range" type="range" value="-1" min="-5" max="5">
+						</div>
+						<div class="box-minmax">
+							<span>-5</span><span>5</span>
+						</div>
+					</div>
 					<div class="m-5">X: <input class="input-coord" id="charge1_x" disabled></input></div>
 					<div class="m-5">Y: <input class="input-coord" id="charge1_y" disabled></input></div>
 					<div class="m-5">Z: <input class="input-coord" id="charge1_z" disabled></input></div>
 				</div>
-				<div class="column">
+				<div class="column mb-10">
 					<div class="m-10">Carga 2</div>
+					<div class="content-range">
+						<span id="rs-bullet2" class="rs-label">-1</span>
+						<div class="range-slider">
+							<input id="rs-range-line2" class="rs-range" type="range" value="-1" min="-5" max="5">
+						</div>
+						<div class="box-minmax">
+							<span>-5</span><span>5</span>
+						</div>
+					</div>
 					<div class="m-5">X: <input class="input-coord" id="charge2_x" disabled></input></div>
 					<div class="m-5">Y: <input class="input-coord" id="charge2_y" disabled></input></div>
 					<div class="m-5">Z: <input class="input-coord" id="charge2_z" disabled></input></div>
 				</div>
-				<div class="column">
+				<div class="column mb-10">
 					<div class="m-10">Carga 3</div>
+					<div class="content-range">
+						<span id="rs-bullet3" class="rs-label">-1</span>
+					</div>
 					<div class="m-5">X: <input class="input-coord" id="charge3_x" disabled></input></div>
 					<div class="m-5">Y: <input class="input-coord" id="charge3_y" disabled></input></div>
 					<div class="m-5">Z: <input class="input-coord" id="charge3_z" disabled></input></div>
 				</div>
+				<div class="column">
+					<input type="button" id="bntClick" value="Comenzar" onclick="startInteraction();"/>
+				</div>
 			</div>
 				
-		</div>
-		<div style="position: absolute; bottom:100px; right:100px; margin-left:10px;">
-			<input type="button" id="bntClick" value="Comenzar" onclick="startInteraction();"/>
 		</div>
 		<div id="prompt">
 			Drag the mouse to rotate the scene<br>Zoom to scale.
