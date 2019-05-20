@@ -2,7 +2,7 @@
 
 * {
     font-family: Arial;
-    font-size:20px;
+    font-size: 20px;
     font-style: italic;
 }
 
@@ -12,22 +12,26 @@ body {
 }
 
 #container {
-	position:absolute;
+	position: absolute;
 }
 
 #webglcanvas {
-	border:none;
+	border: none;
 	background-color:#ffffff;
 }
 
 .column {
 	float: left;
 	width: 33.33%;
-  }
+}
   
   /* Clear floats after the columns */
-  .row:after {
+.row:after {
 	content: "";
-	display: table;
+	display: flex;
 	clear: both;
-  }
+}
+
+.input-coord {
+	margin: 5px;
+}
