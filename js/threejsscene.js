@@ -32,6 +32,7 @@ var a1 = null,
 a2 = null;
 
 var controls = null;
+console.warn = function(){}; // now warnings do nothing
 
 function animate(){
     //Update arrow position:
@@ -45,6 +46,7 @@ function run(){
 
     // Render the scene
     renderer.render( scene, camera );
+    controls.update();
     animate();
 }
 
@@ -232,7 +234,7 @@ function addLine(posXi, posYi, posZi, posXf, posYf, posZf, colorHex){
 }
 
 function addArrow(origin, target, colorHex, charge){
-    var dir = new THREE.Vector3().sub(target, origin);
+    var dir = new THREE.Vector3().subVectors(target, origin);
 
     // Normalize the direction vector (convert to vector of length 1)
     dir.normalize();
@@ -248,7 +250,7 @@ function updateArrowPosition(arrow, origin, target){
     arrow.position.x = origin.x;
     arrow.position.y = origin.y;
     arrow.position.z = origin.z;
-    var dir = new THREE.Vector3().sub(target, origin);
+    var dir = new THREE.Vector3().subVectors(target, origin);
     dir.normalize();
     arrow.setDirection(dir);
 }
