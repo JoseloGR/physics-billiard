@@ -1,14 +1,15 @@
 @charset "UTF-8";
 
 * {
-    font-family: Arial;
     font-size: 20px;
-    font-style: italic;
+	font-family: 'Arimo', sans-serif;
+	font-style: italic;
 }
 
 body {
 	color:rgb(10, 0, 0);
 	margin: 0;
+	font-family: 'Arimo', sans-serif;
 }
 
 #container {
@@ -221,4 +222,46 @@ body {
 	letter-spacing: 0.07em;
 	margin-top: -2px;
 }
-  
+
+.btn {
+	box-sizing: border-box;
+	-webkit-appearance: none;
+	   -moz-appearance: none;
+			appearance: none;
+	background-color: transparent;
+	border: 2px solid #28a745;
+	border-radius: 0.2em;
+	color: #28a745;
+	cursor: pointer;
+	display: flex;
+	align-self: center;
+	font-size: 1rem;
+	font-weight: 400;
+	line-height: 1;
+	padding: 10px;
+	text-decoration: none;
+	text-align: center;
+	text-transform: uppercase;
+	font-weight: 700;
+}
+
+.btn:hover, .btn:focus {
+	color: #fff;
+	outline: 0;
+	background: #28a745;
+}
+
+.btn:after {
+	content: '';
+	position: absolute;
+	display: block;
+	top: 0;
+	left: 50%;
+	-webkit-transform: translateX(-50%);
+			transform: translateX(-50%);
+	width: 0;
+	height: 100%;
+	background: #28a745;
+	z-index: -1;
+	transition: width 150ms ease-in-out;
+}

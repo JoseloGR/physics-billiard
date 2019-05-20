@@ -359,12 +359,12 @@ function listenForKeyboard() {
     // A key has been pressed
     var onKeyDown = function(event) {
         switch (event.keyCode) {
-            case 49: // 1
+            case 65: // a
                 controlBall1.showX = !controlBall1.showX;
                 controlBall1.showY = !controlBall1.showY;
                 controlBall1.showZ = !controlBall1.showZ;
                 break;
-            case 50: // 2
+            case 66: // b
                 controlBall2.showX = !controlBall2.showX;
                 controlBall2.showY = !controlBall2.showY;
                 controlBall2.showZ = !controlBall2.showZ;
